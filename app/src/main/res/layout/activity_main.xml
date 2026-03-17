@@ -12,20 +12,23 @@
         android:orientation="vertical"
         android:visibility="visible">
 
-        <!-- Header -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:padding="20dp"
-            android:paddingTop="40dp">
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
+            android:paddingTop="48dp"
+            android:paddingBottom="20dp">
 
             <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
                 android:src="@drawable/ic_bolt"
-                android:layout_marginEnd="12dp" />
+                android:background="@drawable/header_icon_bg"
+                android:padding="10dp"
+                android:layout_marginEnd="14dp" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -38,19 +41,20 @@
                     android:layout_height="wrap_content"
                     android:text="Sodium"
                     android:textColor="#ffffff"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
+                    android:textSize="26sp"
+                    android:textStyle="bold"
+                    android:letterSpacing="-0.02" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Game Server Manager"
-                    android:textColor="#666666"
-                    android:textSize="14sp" />
+                    android:textColor="#555555"
+                    android:textSize="13sp"
+                    android:layout_marginTop="2dp" />
             </LinearLayout>
         </LinearLayout>
 
-        <!-- Empty State -->
         <LinearLayout
             android:id="@+id/empty_state"
             android:layout_width="match_parent"
@@ -58,55 +62,59 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:gravity="center"
-            android:padding="32dp"
+            android:padding="40dp"
             android:visibility="visible">
 
             <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
                 android:src="@drawable/ic_server"
-                android:alpha="0.3"
-                android:layout_marginBottom="24dp" />
+                android:alpha="0.2"
+                android:layout_marginBottom="20dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="No Panels"
                 android:textColor="#ffffff"
-                android:textSize="20sp"
+                android:textSize="22sp"
                 android:textStyle="bold"
                 android:layout_marginBottom="8dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Add your first Sodium panel to get started"
-                android:textColor="#666666"
+                android:text="Tap + to add your first panel"
+                android:textColor="#555555"
                 android:textSize="14sp"
                 android:gravity="center" />
         </LinearLayout>
 
-        <!-- Panel List -->
         <ScrollView
             android:id="@+id/panel_scroll"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:visibility="gone"
-            android:padding="16dp">
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="8dp"
+            android:clipToPadding="false">
 
             <LinearLayout
                 android:id="@+id/panel_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" />
+                android:orientation="vertical"
+                android:paddingBottom="80dp" />
         </ScrollView>
 
-        <!-- FAB -->
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="24dp">
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
+            android:paddingBottom="24dp">
 
             <ImageButton
                 android:id="@+id/fab_add"
@@ -116,7 +124,7 @@
                 android:background="@drawable/fab_bg"
                 android:src="@drawable/ic_add"
                 android:scaleType="center"
-                android:elevation="8dp"
+                android:elevation="12dp"
                 android:contentDescription="Add panel" />
         </FrameLayout>
     </LinearLayout>
@@ -129,19 +137,20 @@
         android:orientation="vertical"
         android:visibility="gone">
 
-        <!-- Header -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:padding="16dp"
-            android:paddingTop="40dp">
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="48dp"
+            android:paddingBottom="16dp">
 
             <ImageButton
                 android:id="@+id/btn_back"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
                 android:background="@drawable/icon_btn_bg"
                 android:src="@drawable/ic_back"
                 android:scaleType="center"
@@ -158,7 +167,6 @@
                 android:layout_marginStart="16dp" />
         </LinearLayout>
 
-        <!-- Form -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -168,9 +176,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Panel Name"
-                android:textColor="#888888"
-                android:textSize="14sp"
+                android:text="PANEL NAME"
+                android:textColor="#666666"
+                android:textSize="11sp"
+                android:letterSpacing="0.1"
                 android:layout_marginBottom="8dp" />
 
             <EditText
@@ -179,19 +188,20 @@
                 android:layout_height="wrap_content"
                 android:hint="My Server"
                 android:textColor="#ffffff"
-                android:textColorHint="#444444"
+                android:textColorHint="#333333"
                 android:background="@drawable/input_bg"
                 android:padding="16dp"
-                android:textSize="16sp"
+                android:textSize="15sp"
                 android:inputType="text"
                 android:layout_marginBottom="20dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Panel URL"
-                android:textColor="#888888"
-                android:textSize="14sp"
+                android:text="PANEL URL"
+                android:textColor="#666666"
+                android:textSize="11sp"
+                android:letterSpacing="0.1"
                 android:layout_marginBottom="8dp" />
 
             <EditText
@@ -200,24 +210,275 @@
                 android:layout_height="wrap_content"
                 android:hint="https://panel.example.com"
                 android:textColor="#ffffff"
-                android:textColorHint="#444444"
+                android:textColorHint="#333333"
                 android:background="@drawable/input_bg"
                 android:padding="16dp"
-                android:textSize="16sp"
+                android:textSize="15sp"
                 android:inputType="textUri"
                 android:layout_marginBottom="32dp" />
 
             <Button
                 android:id="@+id/btn_save"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="52dp"
                 android:text="Save Panel"
                 android:textColor="#ffffff"
                 android:background="@drawable/button_bg"
-                android:padding="16dp"
-                android:textSize="16sp"
-                android:textAllCaps="false" />
+                android:textSize="15sp"
+                android:textAllCaps="false"
+                android:textStyle="bold" />
         </LinearLayout>
+    </LinearLayout>
+
+    <!-- Settings View -->
+    <LinearLayout
+        android:id="@+id/settings_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="48dp"
+            android:paddingBottom="16dp">
+
+            <ImageButton
+                android:id="@+id/btn_settings_back"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:background="@drawable/icon_btn_bg"
+                android:src="@drawable/ic_back"
+                android:scaleType="center"
+                android:contentDescription="Back" />
+
+            <TextView
+                android:id="@+id/settings_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Panel Settings"
+                android:textColor="#ffffff"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginStart="16dp" />
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="24dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- Auth Status -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/card_bg"
+                    android:orientation="vertical"
+                    android:padding="20dp"
+                    android:layout_marginBottom="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="AUTHENTICATION"
+                        android:textColor="#666666"
+                        android:textSize="11sp"
+                        android:letterSpacing="0.1"
+                        android:layout_marginBottom="10dp" />
+
+                    <TextView
+                        android:id="@+id/token_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Not logged in"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <!-- Notifications -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/card_bg"
+                    android:orientation="vertical"
+                    android:padding="20dp"
+                    android:layout_marginBottom="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="MONITORING"
+                        android:textColor="#666666"
+                        android:textSize="11sp"
+                        android:letterSpacing="0.1"
+                        android:layout_marginBottom="16dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="16dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Push Notifications"
+                                android:textColor="#ffffff"
+                                android:textSize="15sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Alert when servers go offline"
+                                android:textColor="#555555"
+                                android:textSize="12sp"
+                                android:layout_marginTop="2dp" />
+                        </LinearLayout>
+
+                        <Switch
+                            android:id="@+id/switch_notifications"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:thumbTint="#e07a3a"
+                            android:trackTint="#333333" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#1a1a1a"
+                        android:layout_marginBottom="16dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Background Polling"
+                                android:textColor="#ffffff"
+                                android:textSize="15sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Check status every 15 minutes"
+                                android:textColor="#555555"
+                                android:textSize="12sp"
+                                android:layout_marginTop="2dp" />
+                        </LinearLayout>
+
+                        <Switch
+                            android:id="@+id/switch_polling"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:thumbTint="#e07a3a"
+                            android:trackTint="#333333" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Status button -->
+                <Button
+                    android:id="@+id/btn_status_page"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:text="View Server Status"
+                    android:textColor="#ffffff"
+                    android:background="@drawable/button_secondary_bg"
+                    android:textSize="15sp"
+                    android:textAllCaps="false"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+    <!-- Status View -->
+    <LinearLayout
+        android:id="@+id/status_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="48dp"
+            android:paddingBottom="16dp">
+
+            <ImageButton
+                android:id="@+id/btn_status_back"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:background="@drawable/icon_btn_bg"
+                android:src="@drawable/ic_back"
+                android:scaleType="center"
+                android:contentDescription="Back" />
+
+            <TextView
+                android:id="@+id/status_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Server Status"
+                android:textColor="#ffffff"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginStart="16dp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/status_loading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Loading..."
+            android:textColor="#666666"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:padding="32dp" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:clipToPadding="false">
+
+            <LinearLayout
+                android:id="@+id/status_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="24dp" />
+        </ScrollView>
     </LinearLayout>
 
     <!-- WebView -->
@@ -234,15 +495,15 @@
 
         <ImageButton
             android:id="@+id/btn_close_webview"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
             android:layout_gravity="top|start"
             android:layout_margin="16dp"
-            android:layout_marginTop="32dp"
-            android:background="@drawable/icon_btn_bg"
+            android:layout_marginTop="36dp"
+            android:background="@drawable/webview_close_bg"
             android:src="@drawable/ic_back"
             android:scaleType="center"
-            android:elevation="8dp"
+            android:elevation="12dp"
             android:contentDescription="Close" />
     </FrameLayout>
 </FrameLayout>
