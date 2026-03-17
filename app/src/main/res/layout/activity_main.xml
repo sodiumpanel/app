@@ -296,12 +296,34 @@
                         android:letterSpacing="0.1"
                         android:layout_marginBottom="10dp" />
 
-                    <TextView
-                        android:id="@+id/token_status"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Not logged in"
-                        android:textSize="15sp" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:id="@+id/token_status"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Not logged in"
+                            android:textSize="15sp" />
+
+                        <Button
+                            android:id="@+id/btn_auth"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:text="Login"
+                            android:textColor="#ffffff"
+                            android:background="@drawable/button_bg"
+                            android:paddingStart="20dp"
+                            android:paddingEnd="20dp"
+                            android:textSize="13sp"
+                            android:textAllCaps="false"
+                            android:textStyle="bold"
+                            android:minWidth="0dp" />
+                    </LinearLayout>
                 </LinearLayout>
 
                 <!-- Notifications -->

@@ -62,6 +62,7 @@ public class MainActivity extends Activity {
     static final String CHANNEL_ID = "sodium_alerts";
 
     private int editingIndex = -1;
+    private int currentPanelIndex = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -162,6 +163,26 @@ public class MainActivity extends Activity {
                 super.onPageFinished(view, url);
                 extractToken(url);
             }
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                if (currentPanelIndex >= 0) {
+                    try {
+                        JSONArray panels = getPanels();
+                        JSONObject p = panels.getJSONObject(currentPanelIndex);
+                        String panelUrl = p.optString("url", "");
+                        if (url.startsWith(panelUrl) && url.contains("/auth")) {
+                            p.put("token", "");
+                            p.put("notifications", false);
+                            p.put("polling", false);
+                            panels.put(currentPanelIndex, p);
+                            prefs.edit().putString(KEY_PANELS, panels.toString()).apply();
+                            scheduleStatusWorker();
+                        }
+                    } catch (Exception ignored) {}
+                }
+                return false;
+            }
         });
         webView.setWebChromeClient(new WebChromeClient());
         webView.setBackgroundColor(Color.parseColor("#0a0a0a"));
@@ -218,15 +239,45 @@ public class MainActivity extends Activity {
         addPanelView.setVisibility(View.VISIBLE);
     }
 
-    private void openPanel(String url) {
+    private void openPanel(String url, int panelIndex) {
+        currentPanelIndex = panelIndex;
         hideAll();
         webviewContainer.setVisibility(View.VISIBLE);
         webView.loadUrl(url);
     }
 
     private void closeWebView() {
+        extractTokenBeforeClose();
         webView.loadUrl("about:blank");
+        currentPanelIndex = -1;
         showPanelList();
+    }
+
+    private void extractTokenBeforeClose() {
+        if (currentPanelIndex < 0) return;
+        final int idx = currentPanelIndex;
+        webView.evaluateJavascript(
+                "(function(){ return localStorage.getItem('auth_token') || ''; })()",
+                value -> {
+                    String token = (value != null) ? value.replaceAll("^\"|\"$", "") : "";
+                    try {
+                        JSONArray panels = getPanels();
+                        if (idx < panels.length()) {
+                            JSONObject p = panels.getJSONObject(idx);
+                            String oldToken = p.optString("token", "");
+                            if (!token.equals(oldToken)) {
+                                p.put("token", token);
+                                if (token.isEmpty()) {
+                                    p.put("notifications", false);
+                                    p.put("polling", false);
+                                }
+                                panels.put(idx, p);
+                                prefs.edit().putString(KEY_PANELS, panels.toString()).apply();
+                                scheduleStatusWorker();
+                            }
+                        }
+                    } catch (Exception ignored) {}
+                });
     }
 
     private void hideAll() {
@@ -256,14 +307,34 @@ public class MainActivity extends Activity {
             switchPolling.setChecked(panel.optBoolean("polling", false));
 
             String token = panel.optString("token", "");
-            tokenStatus.setText(token.isEmpty() ? "Not logged in — open panel to authenticate" : "Authenticated");
-            tokenStatus.setTextColor(token.isEmpty() ? Color.parseColor("#ff5555") : Color.parseColor("#50fa7b"));
+            boolean loggedIn = !token.isEmpty();
+            tokenStatus.setText(loggedIn ? "Authenticated" : "Not logged in");
+            tokenStatus.setTextColor(loggedIn ? Color.parseColor("#50fa7b") : Color.parseColor("#ff5555"));
 
             ImageButton btnSettingsBack = findViewById(R.id.btn_settings_back);
             btnSettingsBack.setOnClickListener(v -> showPanelList());
 
             Button btnStatusPage = findViewById(R.id.btn_status_page);
             btnStatusPage.setOnClickListener(v -> showStatusPage(index));
+            btnStatusPage.setEnabled(loggedIn);
+            btnStatusPage.setAlpha(loggedIn ? 1f : 0.4f);
+
+            Button btnAuth = findViewById(R.id.btn_auth);
+            if (loggedIn) {
+                btnAuth.setText("Logout");
+                btnAuth.setBackgroundColor(Color.TRANSPARENT);
+                btnAuth.setTextColor(Color.parseColor("#ff5555"));
+                btnAuth.setOnClickListener(v -> logoutPanel(index));
+            } else {
+                btnAuth.setText("Login");
+                btnAuth.setTextColor(Color.parseColor("#ffffff"));
+                btnAuth.setOnClickListener(v -> openPanel(panel.optString("url", ""), index));
+            }
+
+            switchNotif.setEnabled(loggedIn);
+            switchPolling.setEnabled(loggedIn);
+            switchNotif.setAlpha(loggedIn ? 1f : 0.4f);
+            switchPolling.setAlpha(loggedIn ? 1f : 0.4f);
 
             switchNotif.setOnCheckedChangeListener((btn, checked) -> {
                 try {
@@ -398,6 +469,37 @@ public class MainActivity extends Activity {
         }
     }
 
+    private void logoutPanel(int index) {
+        new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert)
+                .setTitle("Logout")
+                .setMessage("This will clear your session and disable monitoring for this panel.")
+                .setPositiveButton("Logout", (d, w) -> {
+                    try {
+                        JSONArray panels = getPanels();
+                        JSONObject panel = panels.getJSONObject(index);
+                        String panelUrl = panel.optString("url", "");
+
+                        panel.put("token", "");
+                        panel.put("notifications", false);
+                        panel.put("polling", false);
+                        panels.put(index, panel);
+                        prefs.edit().putString(KEY_PANELS, panels.toString()).apply();
+
+                        CookieManager cm = CookieManager.getInstance();
+                        cm.setCookie(panelUrl, "");
+                        cm.flush();
+
+                        webView.clearCache(true);
+
+                        scheduleStatusWorker();
+                        Toast.makeText(this, "Logged out", Toast.LENGTH_SHORT).show();
+                        showPanelSettings(index);
+                    } catch (Exception ignored) {}
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
+
     private void savePanel() {
         String name = inputName.getText().toString().trim();
         String url = inputUrl.getText().toString().trim();
@@ -510,7 +612,7 @@ public class MainActivity extends Activity {
                         statusBadge.setVisibility(View.GONE);
                     }
 
-                    itemView.setOnClickListener(v -> openPanel(url));
+                    itemView.setOnClickListener(v -> openPanel(url, index));
                     btnEdit.setOnClickListener(v -> showEditPanel(index, name, url));
                     btnDelete.setOnClickListener(v -> deletePanel(index));
                     btnSettings.setOnClickListener(v -> showPanelSettings(index));
