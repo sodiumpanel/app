@@ -38,14 +38,15 @@ jobs:
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: |
           echo "$KEYSTORE_BASE64" | base64 -d > keystore.jks
-          APK=$(find app/build/outputs/apk/release -name '*.apk' -not -name '*signed*' | head -1)
+          APK=$(find app/build/outputs/apk/release -name '*.apk' | head -1)
+          ${ANDROID_HOME}/build-tools/34.0.0/zipalign -v -p 4 "$APK" app/build/outputs/apk/release/aligned.apk
           ${ANDROID_HOME}/build-tools/34.0.0/apksigner sign \
             --ks keystore.jks \
             --ks-pass pass:"$KEYSTORE_PASSWORD" \
             --ks-key-alias "$KEY_ALIAS" \
             --key-pass pass:"$KEY_PASSWORD" \
             --out app/build/outputs/apk/release/sodium-signed.apk \
-            "$APK"
+            app/build/outputs/apk/release/aligned.apk
 
       - name: Upload Debug APK
         uses: actions/upload-artifact@v4
@@ -89,14 +90,15 @@ jobs:
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: |
           echo "$KEYSTORE_BASE64" | base64 -d > keystore.jks
-          APK=$(find app/build/outputs/apk/release -name '*.apk' -not -name '*signed*' | head -1)
+          APK=$(find app/build/outputs/apk/release -name '*.apk' | head -1)
+          ${ANDROID_HOME}/build-tools/34.0.0/zipalign -v -p 4 "$APK" app/build/outputs/apk/release/aligned.apk
           ${ANDROID_HOME}/build-tools/34.0.0/apksigner sign \
             --ks keystore.jks \
             --ks-pass pass:"$KEYSTORE_PASSWORD" \
             --ks-key-alias "$KEY_ALIAS" \
             --key-pass pass:"$KEY_PASSWORD" \
             --out app/build/outputs/apk/release/sodium-signed.apk \
-            "$APK"
+            app/build/outputs/apk/release/aligned.apk
           rm keystore.jks
 
       - name: Get version from tag
