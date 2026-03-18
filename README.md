@@ -1,6 +1,6 @@
 # Sodium App
 
-Android client for [Sodium Panel](https://github.com/sodiumpanel/panel) — a game server management panel.
+Android client for [Sodium Panel](https://github.com/sodiumpanel/panel) - a game server management panel.
 
 ## Features
 
